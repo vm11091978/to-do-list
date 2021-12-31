@@ -4,21 +4,23 @@
 
 body {
 	margin: 0;
+	padding: 0 3vw;
 	font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 	font-size: 1.1rem;
 	font-weight: 400;
 	line-height: 1;
 	color: black;
+	padding-bottom: 55px;
 /*	background-color: #fff;
 	-webkit-text-size-adjust: 100%; */
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 /* устанавливает цвет подсветки ссылки или любого кликабельного JavaScript элемента при касании. Данное свойство работает только в версиях WebKit на мобильных платформах (например, браузере Safari на устройствах с iOS версии 1.1.1 и выше). */
 }
-
+	
 .todo {
 	display: flex;
 	flex-direction: column;
-	max-width: 400px;
+	max-width: 480px;
 	margin: 15px auto;
 }
 
@@ -44,13 +46,13 @@ body {
 /* стили, общие для всех кнопок */
 .todo__add, .option {
 	border-radius: 4px;
-	background-color: #8bc34a;
+	background-color: #83c14d;
 	color: whitesmoke;
 	cursor: pointer;
 	transition: background-color 0.2s ease-in;
 	padding: 5px 12px 10px; /* сверху, слева, снизу */
 }
-
+	
 .todo__add {
 	position: absolute;
 	right: 4px;
@@ -73,14 +75,19 @@ body {
 li {
 	position: relative;
 	height: 40px;
-	margin-bottom: 15px;
+	margin-top: 15px;
 	padding: 10px 3px 0 12px;
 	list-style-type: none;
-	background-color: lightsteelblue;
+	background-color: gainsboro;
 	overflow: hidden;
+	/* transition: background-color 1s ease-in;
+	/* transition: margin-top 1s ease-in; */
 }
 li span {
 	white-space: nowrap;
+}
+@media (max-width: 361px) {
+	.todo__text, li span {font-size: 1rem}
 }
 
 .todo__made, .todo__delete{
@@ -89,7 +96,7 @@ li span {
 	top: 3px;
 	right: 3px;
 	color: whitesmoke;
-	opacity: 0.6;
+	opacity: 0.5;
 }
 .todo__made:hover, .todo__delete:hover {
 	opacity: 1;
@@ -97,24 +104,43 @@ li span {
 }
 
 .todo__made {
-	right: 48px;
-	background-color: darkseagreen;
-	padding: 6px;
-	margin-right: 12px;
+	width: 50px;
+	right: 50px;
+	background-color: #66BB6A;
+	padding-top: 4px;
+	padding-left: 18px;
 }
 
 .todo__delete {
 	background-color: lightcoral;
-	padding: 12px 6px;
-
+	padding: 12px 4px;
 	font-size: 40px;
 	line-height: 0;
 }
 
-.active {
-	/* display: none; */
-}
 .made {
-	background-color: burlywood;
 	text-decoration: line-through;
+	padding-left: 40px;
+}
+
+.made > .checkmark, .todo__made > .checkmark {
+	width: 14px;
+	height: 21px;
+	background-color: transparent;
+	transform: rotate(45deg);
+}
+.made > .checkmark {
+	position: absolute;
+	left: 12px;
+	margin-top: -2px;
+	border-right: 5px solid #66BB6A;
+	border-bottom: 5px solid #66BB6A;
+}
+.todo__made > .checkmark {
+	width: 14px;
+	height: 21px;
+	background-color: transparent;
+	transform: rotate(45deg);
+	border-right: 5px solid whitesmoke;
+	border-bottom: 5px solid whitesmoke;
 }
