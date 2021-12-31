@@ -1,0 +1,120 @@
+﻿*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	font-size: 1.1rem;
+	font-weight: 400;
+	line-height: 1;
+	color: black;
+/*	background-color: #fff;
+	-webkit-text-size-adjust: 100%; */
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+/* устанавливает цвет подсветки ссылки или любого кликабельного JavaScript элемента при касании. Данное свойство работает только в версиях WebKit на мобильных платформах (например, браузере Safari на устройствах с iOS версии 1.1.1 и выше). */
+}
+
+.todo {
+	display: flex;
+	flex-direction: column;
+	max-width: 400px;
+	margin: 15px auto;
+}
+
+.todo__input {
+	position: relative;
+	margin-bottom: 20px;
+}
+
+.todo__text {
+	outline: none;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+	border-radius: 4px;
+	border: 1px solid #e0e0e0;
+	padding: 6px 110px 6px 12px;
+	width: 100%;
+}
+.todo__text:focus {
+	border-color: #dcedc8;
+}
+
+/* стили, общие для всех кнопок */
+.todo__add, .option {
+	border-radius: 4px;
+	background-color: #8bc34a;
+	color: whitesmoke;
+	cursor: pointer;
+	transition: background-color 0.2s ease-in;
+	padding: 5px 12px 10px; /* сверху, слева, снизу */
+}
+
+.todo__add {
+	position: absolute;
+	right: 4px;
+	top: 50%;
+	transform: translateY(-50%);
+	padding: 3px 12px 8px; /* сверху, слева, снизу */
+}
+/* top: 50% и поднять вверх на половину собственной высоты margin-top: -Hinner / 2.
+способ не может быть применен, когда высота внутреннего блока неизвестна */
+.todo__add:hover, .option:hover {
+	background-color: #689f38;
+}
+
+.todo__options {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+li {
+	position: relative;
+	height: 40px;
+	margin-bottom: 15px;
+	padding: 10px 3px 0 12px;
+	list-style-type: none;
+	background-color: lightsteelblue;
+	overflow: hidden;
+}
+li span {
+	white-space: nowrap;
+}
+
+.todo__made, .todo__delete{
+	position: absolute;
+	height: 34px;
+	top: 3px;
+	right: 3px;
+	color: whitesmoke;
+	opacity: 0.6;
+}
+.todo__made:hover, .todo__delete:hover {
+	opacity: 1;
+	cursor: pointer;
+}
+
+.todo__made {
+	right: 48px;
+	background-color: darkseagreen;
+	padding: 6px;
+	margin-right: 12px;
+}
+
+.todo__delete {
+	background-color: lightcoral;
+	padding: 12px 6px;
+
+	font-size: 40px;
+	line-height: 0;
+}
+
+.active {
+	/* display: none; */
+}
+.made {
+	background-color: burlywood;
+	text-decoration: line-through;
+}
