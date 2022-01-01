@@ -80,8 +80,8 @@ li {
 	list-style-type: none;
 	background-color: gainsboro;
 	overflow: hidden;
-	/* transition: background-color 1s ease-in;
-	/* transition: margin-top 1s ease-in; */
+	/* transition: background-color 1s ease-in; */
+	touch-action: none;
 }
 li span {
 	white-space: nowrap;
@@ -123,20 +123,20 @@ li span {
 	padding-left: 40px;
 }
 
-.made > .checkmark, .todo__made > .checkmark {
+.made > .check, .checkmark {
 	width: 14px;
 	height: 21px;
 	background-color: transparent;
 	transform: rotate(45deg);
 }
-.made > .checkmark {
+.made > .check {
 	position: absolute;
 	left: 12px;
 	margin-top: -2px;
 	border-right: 5px solid #66BB6A;
 	border-bottom: 5px solid #66BB6A;
 }
-.todo__made > .checkmark {
+.checkmark {
 	width: 14px;
 	height: 21px;
 	background-color: transparent;

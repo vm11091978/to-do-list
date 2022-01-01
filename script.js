@@ -44,7 +44,7 @@ arr.forEach(message => createList(message[0], message[1]));
 function createList(message, clas) {
 	let li = document.createElement('li'); // создадим пункт списка задач
 	li.className = 'todo__item ' + clas;
-	li.innerHTML = '<div class="checkmark"></div><span>' + message + '</span><div class="todo__delete">&times;</div><div class="todo__made"><div class="checkmark"></div></div>';
+	li.innerHTML = '<div class="check"></div><span>' + message + '</span><div class="todo__delete">&times;</div><div class="todo__made"><div class="checkmark"></div></div>';
 	todo_items.append(li); /* вставим li внутрь ul класса "todo__items" */
 }
 
@@ -71,6 +71,7 @@ function updateList() {
 
 	init();
 	update();
+	moving();
 }
 
 function del(i) {
@@ -97,6 +98,7 @@ function made(i) {
 	} else if (arr[i][1] == 'made') {
 		arr[i][1] = 'active'; // или изменяем обратно
 	}
+	// console.log(e);
 	updateList();
 }
 
@@ -105,6 +107,7 @@ function update() {
 	items = document.querySelectorAll( '.todo__item' );
 	for (let button_made of button_mades) { // перебираем все кнопки "сделано"
 		button_made.addEventListener('click', function() { // по клику по одной из них
+			// event.stopPropagation();
 			items.forEach(( item, i ) => { // узнаем порядковый номер её родителя
 				item.addEventListener('click', e => made(i)); // made(i) выполнится один раз
 			});
@@ -115,7 +118,7 @@ update();
 
 // Скрипт ниже для перетаскивания элементов списка задач мышкой
 
-function move2(e, i) { // передаём функции объект события и переменную i
+function move(e, i) { // передаём функции объект события и переменную i
 	let pageY = e.pageY;
 	let element = document.querySelectorAll('.todo__items li')[i];
 
@@ -128,115 +131,93 @@ function move2(e, i) { // передаём функции объект собы�
 	// pageYOffset - количество пикселей, на которое документ прокручен по вертикали
 
 	// Зададим нижнему элементу бОльший отступ, чтобы он не сместился вверх
-	let next = document.querySelectorAll('.todo__items li')[i+1];
+	let next = document.querySelectorAll('.todo__items li')[i + 1];
+
 	if (next) {
 		next.style.marginTop = 70 + 'px';
 	} else {
 		todo_items.style.marginBottom = 55 + 'px';
 	}
-	
+
 	element.style = 'background: beige; cursor: move; position: absolute; z-index: 2';
 	var elemWidth = todo_items.clientWidth; // Узнаем текущую ширину списка задач
 	element.style.width = elemWidth + 'px'; // и присвоим эту ширину нашему элементу
 
 	// Двигая мышью, перемещаем элемент по экрану
-	document.onmousemove = function(e) {
+	document.onpointermove = function(e) {
 		element.style.top = e.pageY - shiftY - 15 + 'px';
 		// получим изменение координат элемента по оси Y при его перетаскивании:
 		let differenceСoords = pageY - e.pageY;
 
-		let j = i - Math.floor((differenceСoords + 27.5)/55); // в начале перемещения j = i
-		if (j < 0) {j = 0}
-		if (j > items.length - 1) {j = items.length - 1}
+		let count = i - Math.floor((differenceСoords + 27.5)/55); // в начале перемещения count = i
+		let countPrev = count - 1;
+		if (count > i) {countPrev = count}
 
-		let ele = document.querySelectorAll('.todo__items li')[j];	
-		let eleNext = document.querySelectorAll('.todo__items li')[j+1];
+		let countNext = count;
+		if (count + 1 > i) {countNext = count + 1}
+
+		let countNextNext = count + 1;
+		if (count + 2 > i) {countNextNext = count + 2}
 		
-		// let elePrev = document.querySelectorAll('.todo__items li')[j-1];
-		let elePrev = false;
-		if (j > 0) {
-			let elePrev = document.querySelectorAll('.todo__items li')[j-1];
+		let currentPrev = document.querySelectorAll('.todo__items li')[countPrev];
+		let currentNext = document.querySelectorAll('.todo__items li')[countNext];
+		let currentNextNext = document.querySelectorAll('.todo__items li')[countNextNext];
+
+		if (currentPrev) {
+			currentPrev.style = "margin-top: 15px; transition: 0.2s linear";
 		}
-		let eleNextNext = document.querySelectorAll('.todo__items li')[j+2];
-		if (j > items.length - 2) {
-			let eleNextNext = document.querySelectorAll('.todo__items li')[items.length - 1];
+		if (currentNext) {
+			currentNext.style = "margin-top: 70px; transition: 0.2s linear";
 		}
-		
-		// при перемещении элемента вверх относительно исходной позиции
-		if (differenceСoords > 27.5 && i != 0) {
-			if (elePrev) {
-				elePrev.style = "margin-top: 15px; transition: 1s linear";
-			}
-			ele.style = "margin-top: 70px; transition: 1s linear";
-			if (next) {
-				next.style = "margin-top: 15px; transition: 1s linear";
-			}
-			if (eleNext) {
-				eleNext.style.marginTop = 15 + 'px';
-				eleNext.style.transition = 'margin-top 1s linear';
+		if (currentNextNext) {
+			currentNextNext.style = "margin-top: 15px; transition: 0.2s linear";
+		}
+		console.log(i, count, countPrev, countNext, countNextNext);
+
+		// Отследим окончание переноса
+		element.onpointerup = function() {
+			document.onpointermove = null;
+			element.onpointerup = null;
+
+			// i это позиция начала переноса элемента, count это позиция окончания переноса:
+			let source = arr[i];
+			arr.splice(i, 1); // удаляем из массива элемент под номером i
+			if (count < 0) {
+				arr.push(source); // добавляем source в конец массива
+			} else {
+				arr.splice(count, 0, source); // вставляем в массив source перед count
 			}
 
-		// при перемещении элемента вниз относительно исходной позиции	
-		} else if (differenceСoords < -27.5) {
-			// elePrev.style = "margin-top: 15px; transition: 1s linear";
-			ele.style = "margin-top: 15px; transition: 1s linear";
-			if (next) {
-				next.style = "margin-top: 15px; transition: 1s linear";
-			}
-			if (eleNext) {
-				eleNext.style.marginTop = 70 + 'px';
-				eleNext.style.transition = 'margin-top 1s linear';
-			}
-			if (eleNextNext) {
-				eleNextNext.style = "margin-top: 15px; transition: 1s linear";
-			}
-
-
-		// при перемещении элемента близко к исходной позиции
-		} else {
-			if (elePrev) {
-				elePrev.style = "margin-top: 15px; transition: 1s linear";
-			}
-			if (next) {
-				next.style = "margin-top: 70px; transition: 1s linear";
-			}
-			if (eleNextNext) {
-				eleNextNext.style = "margin-top: 15px; transition: 1s linear";
-			}
+			updateList();
 		}
-		console.log(i, j);
 	}
 
-	
-	
-	// Отследим окончание переноса
-	element.onmouseup = function() {
-		document.onmousemove = null;
-		element.onmouseup = null;
+	// Пользователь отпустил клавишу мыши, не сдвинув элемент (не было события onmousemove):
+	element.onpointerup = function() {
+		document.onpointermove = null;
+		element.onpointerup = null;
+
+		updateList();
 	}
-	
-	
-	
 }
-
-function move() {
+/*
+function moving() {
 	items = document.querySelectorAll( '.todo__item' );
 	items.forEach(( item, i ) => { // перебираем все задачи, узнаём её порядковый номер
-		item.addEventListener('mousedown', e => move2(e, i) );
+		item.addEventListener('mousedown', e => move(e, i) );
 		// или так: item.addEventListener('mousedown', function(e) { отследим нажатие });
-		
 	});
-	
 }
-move();
-
-
-
-
-/*
-		// console.log(i, items.length);
-
-alert(b);
 */
-// console.log(b);
-// document.addEventListener('click', function() {	console.log(button_delets) });
+function moving() {
+	items = document.querySelectorAll( '.todo__item' );
+	items.forEach(( item, i ) => { // перебираем все задачи, узнаём её порядковый номер
+		item.addEventListener('pointerdown', function(e) {
+			e.preventDefault(); // нужно для корректной работы некоторых браузеров
+			if (event.target.className != 'todo__made' && event.target.className != 'checkmark' && event.target.className != 'todo__delete') {
+				move(e, i);
+			}
+		});
+	});
+}
+moving();
