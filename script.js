@@ -134,9 +134,9 @@ function move(e, i) { // передаём функции объект событ
 	let next = document.querySelectorAll('.todo__items li')[i + 1];
 
 	if (next) {
-		next.style.marginTop = 70 + 'px';
+		next.style.marginTop = 80 + 'px';
 	} else {
-		todo_items.style.marginBottom = 55 + 'px';
+		todo_items.style.marginBottom = 60 + 'px';
 	}
 
 	element.style = 'background: beige; cursor: move; position: absolute; z-index: 2';
@@ -145,11 +145,11 @@ function move(e, i) { // передаём функции объект событ
 
 	// Двигая мышью, перемещаем элемент по экрану
 	document.onpointermove = function(e) {
-		element.style.top = e.pageY - shiftY - 15 + 'px';
+		element.style.top = e.pageY - shiftY - 20 + 'px';
 		// получим изменение координат элемента по оси Y при его перетаскивании:
 		let differenceСoords = pageY - e.pageY;
 
-		let count = i - Math.floor((differenceСoords + 27.5)/55); // в начале перемещения count = i
+		let count = i - Math.floor((differenceСoords + 30)/60); // в начале перемещения count = i
 		let countPrev = count - 1;
 		if (count > i) {countPrev = count}
 
@@ -164,13 +164,13 @@ function move(e, i) { // передаём функции объект событ
 		let currentNextNext = document.querySelectorAll('.todo__items li')[countNextNext];
 
 		if (currentPrev) {
-			currentPrev.style = "margin-top: 15px; transition: 0.2s linear";
+			currentPrev.style = "margin-top: 20px; transition: 0.2s linear";
 		}
 		if (currentNext) {
-			currentNext.style = "margin-top: 70px; transition: 0.2s linear";
+			currentNext.style = "margin-top: 80px; transition: 0.2s linear";
 		}
 		if (currentNextNext) {
-			currentNextNext.style = "margin-top: 15px; transition: 0.2s linear";
+			currentNextNext.style = "margin-top: 20px; transition: 0.2s linear";
 		}
 		console.log(i, count, countPrev, countNext, countNextNext);
 

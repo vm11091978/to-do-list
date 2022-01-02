@@ -75,7 +75,7 @@ body {
 li {
 	position: relative;
 	height: 40px;
-	margin-top: 15px;
+	margin-top: 20px;
 	padding: 10px 3px 0 12px;
 	list-style-type: none;
 	background-color: gainsboro;
@@ -112,9 +112,11 @@ li span {
 }
 
 .todo__delete {
+	width: 34px;
 	background-color: lightcoral;
-	padding: 12px 4px;
+	text-align: center;
 	font-size: 40px;
+	padding-top: 12px;
 	line-height: 0;
 }
 
