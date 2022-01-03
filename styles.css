@@ -96,6 +96,7 @@ li span {
 	top: 3px;
 	right: 3px;
 	color: whitesmoke;
+	padding-top: 3px;
 	opacity: 0.5;
 }
 .todo__made:hover, .todo__delete:hover {
@@ -107,7 +108,6 @@ li span {
 	width: 50px;
 	right: 50px;
 	background-color: #66BB6A;
-	padding-top: 4px;
 	padding-left: 18px;
 }
 
@@ -115,9 +115,7 @@ li span {
 	width: 34px;
 	background-color: lightcoral;
 	text-align: center;
-	font-size: 40px;
-	padding-top: 12px;
-	line-height: 0;
+	font-size: 24px;
 }
 
 .made {
