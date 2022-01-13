@@ -144,3 +144,13 @@ li span {
 	border-right: 5px solid whitesmoke;
 	border-bottom: 5px solid whitesmoke;
 }
+
+/* анимация для плавного смещения нижних элементов при исчезновении одного из них */
+@keyframes smooth {
+  0% {
+    margin-top: 80px;
+  }
+  100% {
+    margin-top: 20px;
+  }
+}
