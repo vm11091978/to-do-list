@@ -20,17 +20,17 @@ input.addEventListener('keydown', function(e) {
 });
 
 button_all.addEventListener("click", function() {
-	localStorage.setItem('button_current', "all");
+	localStorage.setItem('button', "all");
 	updateList();
 });
 
 button_active.addEventListener("click", function() {
-	localStorage.setItem('button_current', "active");
+	localStorage.setItem('button', "active");
 	updateList();
 });
 
 button_completed.addEventListener("click", function() {
-	localStorage.setItem('button_current', "made");
+	localStorage.setItem('button', "made");
 	updateList();
 });
 
@@ -43,27 +43,27 @@ if (database) { // если хранилищe не пустое
 }
 
 // а так же узнаем, на какой вкладке находился клиент, и воссоздадим её
-let button_current = localStorage.getItem('button_current');
-if (!button_current) {
-	button_current = "all";
+let button = localStorage.getItem('button');
+if (!button) {
+	button = "all";
 }
 
 function tab() {
-	if (button_current == "all") {
+	if (button == "all") {
 		document.querySelectorAll(".active").forEach(elem => elem.style.display = "block");
 		document.querySelectorAll(".made").forEach(elem => elem.style.display = "block");
 		button_all.style.background = '#689f38';
 	} else {
 		button_all.style.background = '';
 	}
-	if (button_current == "active") {
+	if (button == "active") {
 		document.querySelectorAll(".made").forEach(elem => elem.style.display = "none");
 		document.querySelectorAll(".active").forEach(elem => elem.style.display = "block");
 		button_active.style.background = '#689f38';
 	} else {
 		button_active.style.background = '';
 	}
-	if (button_current == "made") {
+	if (button == "made") {
 		document.querySelectorAll(".active").forEach(elem => elem.style.display = "none");
 		document.querySelectorAll(".made").forEach(elem => elem.style.display = "block");
 		button_completed.style.background = '#689f38';
@@ -102,7 +102,7 @@ function updateList() {
 	localStorage.setItem('todo', json); // сохраняем массив с ключом 'todo'
 
 	// а так же узнаем, на какой вкладке находился клиент, и воссоздадим её
-	button_current = localStorage.getItem('button_current');
+	button = localStorage.getItem('button');
 	tab();
 
 	init();
@@ -113,10 +113,21 @@ function updateList() {
 
 function del(i) {
 	arr.splice(i, 1); // удаляем из массива элемент под номером i
-	updateList();
 	
+	let i_current_a = arr_active.indexOf(i); // это номер элемента в локальном списке "активные"
+	let i_current_m = arr_made.indexOf(i); // это номер элемента в локальном списке "сделанные"
+	
+	updateList();
+
 	// Зададим нижнему элементу бОльший отступ, чтобы он резко не сместился вверх
-	let next2 = document.querySelectorAll('.todo__items li')[i];
+	let i_current_all = i;
+	if (button == "active") {
+		i_current_all = arr_active[i_current_a]; // это номер элемента в общем списке
+	}
+	if (button == "made") {
+		i_current_all = arr_made[i_current_m]; // это номер элемента в общем списке
+	}
+	let next2 = document.querySelectorAll('.todo__items li')[i_current_all];
 	if (next2) {
 		next2.style = "animation-name: smooth; animation-duration: 0.3s; animation-timing-function: linear; animation-fill-mode: both";
 	}
@@ -143,16 +154,16 @@ function made(i) {
 	}
 	
 	let i_current_a = arr_active.indexOf(i); // это номер элемента в локальном списке "активные"
-	let i_current_m = arr_made.indexOf(i); // это номер элемента в локальном списке "завершенные"
+	let i_current_m = arr_made.indexOf(i); // это номер элемента в локальном списке "сделанные"
 	
 	updateList();
 
 	// Зададим нижнему элементу бОльший отступ, чтобы он резко не сместился вверх
 	let i_current_all;
-	if (button_current == "active") {
+	if (button == "active") {
 		i_current_all = arr_active[i_current_a]; // это номер элемента в общем списке
 	}
-	if (button_current == "made") {
+	if (button == "made") {
 		i_current_all = arr_made[i_current_m]; // это номер элемента в общем списке
 	}
 	let next3 = document.querySelectorAll('.todo__items li')[i_current_all];
@@ -207,11 +218,11 @@ function move(e, i) { // передаём функции объект событ
 
 	// Зададим нижнему элементу бОльший отступ, чтобы он не сместился вверх
 	let next = document.querySelectorAll('.todo__items li')[i + 1];
-	if (button_current == "active") {
+	if (button == "active") {
 		let i_current = arr_active[arr_active.indexOf(i) + 1];
 		next = document.querySelectorAll('.todo__items li')[i_current];
 	}
-	if (button_current == "made") {
+	if (button == "made") {
 		let i_current = arr_made[arr_made.indexOf(i) + 1];
 		next = document.querySelectorAll('.todo__items li')[i_current];
 	}
@@ -232,7 +243,7 @@ function move(e, i) { // передаём функции объект событ
 		let differenceСoords = pageY - e.pageY;
 
 		// если клиент находится на вкладке "активные":
-		if (button_current == "active") {
+		if (button == "active") {
 			var count = arr_active.indexOf(i) - Math.floor((differenceСoords + 0.5*height)/height);
 
 			let countPrev = count - 1;
@@ -248,7 +259,7 @@ function move(e, i) { // передаём функции объект событ
 			var currentNext = arr_active[countNext];
 			var currentNextNext = arr_active[countNextNext];
 		} // если клиент находится на вкладке "сделанные":
-		else if (button_current == "made") {
+		else if (button == "made") {
 			var count = arr_made.indexOf(i) - Math.floor((differenceСoords + 0.5*height)/height);
 
 			let countPrev = count - 1;
@@ -282,17 +293,17 @@ function move(e, i) { // передаём функции объект событ
 		let currentAllNextNext = document.querySelectorAll('.todo__items li')[currentNextNext];
 
 		if (currentAllPrev) {
-			currentAllPrev.style = "margin-top: 20px; transition: 0.2s linear";
+			currentAllPrev.style = "margin-top: " + indent + "px; transition: 0.2s linear";
 		}
 		if (currentAllNext) {
-			currentAllNext.style = "margin-top: 80px; transition: 0.2s linear";
+			currentAllNext.style = "margin-top: " + (height + indent) + "px; transition: 0.2s linear";
 		}
 		if (currentAllNextNext) {
-			currentAllNextNext.style = "margin-top: 20px; transition: 0.2s linear";
+			currentAllNextNext.style = "margin-top: " + indent + "px; transition: 0.2s linear";
 		}
-		
-		// Отследим окончание переноса
-		element.onpointerup = function() {
+
+		// Отследим окончание переноса (клиент может отпустить клавишу мыши, когда курсор находится слева / справа от элемента)
+		document.onpointerup = function() {
 			document.onpointermove = null;
 			element.onpointerup = null;
 
@@ -302,9 +313,9 @@ function move(e, i) { // передаём функции объект событ
 			if (count < 0) {
 				arr.push(source); // добавляем source в конец массива
 			} else { // вставляем в массив source перед count
-				if (button_current == "active") {
+				if (button == "active") {
 					arr.splice(arr_active[count], 0, source);
-				} else if (button_current == "made") {
+				} else if (button == "made") {
 					arr.splice(arr_made[count], 0, source);
 				} else {
 					arr.splice(count, 0, source);
