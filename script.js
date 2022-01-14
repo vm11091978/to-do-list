@@ -303,9 +303,13 @@ function move(e, i) { // передаём функции объект событ
 		}
 
 		// Отследим окончание переноса (клиент может отпустить клавишу мыши, когда курсор находится слева / справа от элемента)
-		document.onpointerup = function() {
+		/* element.onpointerup = function() {
 			document.onpointermove = null;
 			element.onpointerup = null;
+		*/
+			document.onpointerup = function() {
+			document.onpointermove = null;
+			document.onpointerup = null;
 
 			// i это позиция начала переноса элемента, count это позиция окончания переноса:
 			let source = arr[i];
