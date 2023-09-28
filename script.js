@@ -76,7 +76,7 @@ tab();
 function createList(message, clas) {
 	let li = document.createElement('li'); // создадим пункт списка задач
 	li.className = 'todo__item ' + clas;
-	li.innerHTML = '<div class="check"></div><span>' + message + '</span><div class="todo__delete">&times;</div><div class="todo__made"><div class="checkmark"></div></div>';
+	li.innerHTML = '<div class="check"></div><span>' + message + '</span><div class="todo__delete">22&times;</div><div class="todo__made"><div class="checkmark"></div></div>';
 	todo_items.append(li); /* вставим li внутрь ul класса "todo__items" */
 }
 
