@@ -2,13 +2,13 @@
 
 let input = document.querySelector('.todo__text');
 let button_add = document.querySelector('.todo__add'); // кнопка "добавить"
-let items = document.querySelectorAll( '.todo__item' ); // весь список задач
+let items = document.querySelectorAll('.todo__item'); // весь список задач
 let todo_items = document.querySelector('.todo__items'); // отдельная задача
-let button_all = document.querySelector( '.all' ); // кнопка "все"
-let button_active = document.querySelector( '.actived' ); // кнопка "активные"
-let button_completed = document.querySelector( '.completed' ); // кнопка "завершённые"
-let button_delets = document.querySelector( '.todo__delete' ); // кнопки удалить
-let button_mades = document.querySelector( '.todo__made' ); // кнопки галочка
+let button_all = document.querySelector('.all'); // кнопка "все"
+let button_active = document.querySelector('.actived'); // кнопка "активные"
+let button_completed = document.querySelector('.completed'); // кнопка "завершённые"
+let button_delets = document.querySelector('.todo__delete'); // кнопки удалить
+let button_mades = document.querySelector('.todo__made'); // кнопки галочка
 
 const height = 60; // высота задачи с отступом или шаг списка задач
 const indent = 20; // отступ между задачами
@@ -76,7 +76,7 @@ tab();
 function createList(message, clas) {
 	let li = document.createElement('li'); // создадим пункт списка задач
 	li.className = 'todo__item ' + clas;
-	li.innerHTML = '<div class="check"></div><span>' + message + '</span><div class="todo__delete">&#10006;</div><div class="todo__made"><div class="checkmark"></div></div>';
+	li.innerHTML = '<div class="check"></div><span>' + message + '</span><div class="todo__delete">&times;</div><div class="todo__made"><div class="checkmark"></div></div>';
 	todo_items.append(li); /* вставим li внутрь ul класса "todo__items" */
 }
 
